@@ -1,0 +1,220 @@
+/* Variables CSS */
+:root {
+    --color-primary: #5D5CDE;
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #ffffff;
+    --color-text: #1f2937;
+    --color-text-secondary: #4b5563;
+    --color-border: #e5e7eb;
+    --color-button-secondary: #e5e7eb;
+    --color-button-secondary-hover: #d1d5db;
+}
+
+.dark {
+    --color-bg: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-bg-tertiary: #374151;
+    --color-text: #f9fafb;
+    --color-text-secondary: #9ca3af;
+    --color-border: #374151;
+    --color-button-secondary: #374151;
+    --color-button-secondary-hover: #4b5563;
+}
+
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Composant Text Analyzer */
+.text-analyzer__title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+}
+
+/* Composant Form */
+.form {
+    margin-bottom: 1.5rem;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form__textarea {
+    width: 100%;
+    height: 12rem;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text);
+    resize: vertical;
+}
+
+.form__textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.form__textarea::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.form__buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.form__button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form__button--primary {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.form__button--primary:hover {
+    background-color: var(--color-primary);
+    opacity: 0.9;
+}
+
+.form__button--secondary {
+    background-color: var(--color-button-secondary);
+    color: var(--color-text);
+}
+
+.form__button--secondary:hover {
+    background-color: var(--color-button-secondary-hover);
+}
+
+/* Composant Results */
+.results {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background-color: var(--color-bg-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.results--hidden {
+    display: none;
+}
+
+.results__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+}
+
+.results__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .results__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Composant Stat Card */
+.stat-card {
+    background-color: var(--color-bg-tertiary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card__list {
+    list-style: none;
+}
+
+.stat-card__item {
+    margin-bottom: 0.5rem;
+}
+
+.stat-card__label {
+    font-weight: 500;
+}
+
+/* Composant Word Frequency */
+.word-frequency__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.word-frequency__table-container {
+    background-color: var(--color-bg-tertiary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    max-height: 15rem;
+}
+
+.word-frequency__table {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.word-frequency__table-header {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.word-frequency__table-cell {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Composant Footer */
+.footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
