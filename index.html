@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyseur de Texte</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="text-analyzer">
+            <h1 class="text-analyzer__title">Analyseur de Texte</h1>
+            
+            <div class="form">
+                <label for="textInput" class="form__label">Entrez votre texte :</label>
+                <textarea 
+                    id="textInput" 
+                    class="form__textarea"
+                    placeholder="Écrivez ou collez votre texte ici..."
+                ></textarea>
+                
+                <div class="form__buttons">
+                    <button id="analyzeBtn" class="form__button form__button--primary">
+                        Analyser le texte
+                    </button>
+                    <button id="clearBtn" class="form__button form__button--secondary">
+                        Effacer
+                    </button>
+                    <button id="sampleBtn" class="form__button form__button--secondary">
+                        Texte exemple
+                    </button>
+                </div>
+            </div>
+            
+            <div id="resultsContainer" class="results results--hidden">
+                <h2 class="results__title">Résultats de l'analyse</h2>
+                
+                <div class="results__grid">
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Statistiques générales</h3>
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item"><span class="stat-card__label">Mots :</span> <span id="wordCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Caractères :</span> <span id="charCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Caractères (sans espaces) :</span> <span id="charNoSpaceCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Phrases :</span> <span id="sentenceCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Paragraphes :</span> <span id="paragraphCount">0</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Analyse grammaticale</h3>
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item"><span class="stat-card__label">Articles :</span> <span id="articleCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Verbes (potentiels) :</span> <span id="verbCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Adjectifs (potentiels) :</span> <span id="adjectiveCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Pronoms :</span> <span id="pronounCount">0</span></li>
+                            <li class="stat-card__item"><span class="stat-card__label">Conjonctions :</span> <span id="conjunctionCount">0</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="word-frequency">
+                    <h3 class="word-frequency__title">Fréquence des mots</h3>
+                    <div class="word-frequency__table-container">
+                        <table class="word-frequency__table">
+                            <thead>
+                                <tr>
+                                    <th class="word-frequency__table-header">Mot</th>
+                                    <th class="word-frequency__table-header">Fréquence</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wordFrequencyBody">
+                                <!-- Word frequency data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="footer">
+                <p>Analyseur de texte français - Comptez les mots, articles, verbes et plus</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
