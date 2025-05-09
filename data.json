@@ -1,0 +1,11 @@
+{
+  "accounts": [
+    {
+      "name": "Administrateur",
+      "email": "kilombopapylo@gmail.com",
+      "password": "administrateur",
+      "isAdmin": true
+    }
+  ],
+  "analysisData": {}
+}
