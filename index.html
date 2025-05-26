@@ -4,236 +4,728 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyseur de Texte Pro</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <!-- Application Container -->
-    <div class="container" id="app">
-        <!-- Header Section (Visible après connexion) -->
-        <header id="header" class="header header--hidden">
-            <h1 class="header__title">Analyseur de Texte Pro</h1>
+<body class="font-size-base">
+    <!-- Header -->
+    <header class="header">
+        <div class="header__content">
+            <a href="#" class="header__logo" data-page="analyzer">
+                <i class="fas fa-file-alt header__logo-icon"></i>
+                <span>Analyseur de Texte Pro</span>
+            </a>
+            
+            <!-- Navigation principale (visible sur desktop) -->
             <nav class="header__nav">
-                <div class="header__user">
-                    <span class="header__user-name" id="userDisplayName">Utilisateur</span>
-                </div>
-                <button id="logoutBtn" class="button button--secondary">Déconnexion</button>
+                <a href="#" class="header__nav-item header__nav-item--active" data-page="analyzer">Analyseur</a>
+                <a href="#" class="header__nav-item" data-page="history">Historique</a>
+                <a href="#" class="header__nav-item" data-page="settings">Paramètres</a>
             </nav>
-        </header>
-
-        <!-- Sections d'authentification -->
-        <section id="loginSection" class="auth">
-            <h2 class="auth__title">Connexion</h2>
-            <form id="loginForm" class="auth__form">
-                <div class="form-group">
-                    <label for="loginEmail" class="form-group__label">Email</label>
-                    <input type="email" id="loginEmail" class="form-group__input" placeholder="Votre adresse email" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword" class="form-group__label">Mot de passe</label>
-                    <input type="password" id="loginPassword" class="form-group__input" placeholder="Votre mot de passe" required>
-                </div>
-                <button type="submit" class="button button--primary button--block">Se connecter</button>
-            </form>
-            <div class="auth__footer">
-                <p>Vous n'avez pas de compte ? <span class="auth__link" id="showRegisterBtn">S'inscrire</span></p>
-                <p class="mt-2"><span class="auth__link" id="showForgotPasswordBtn">Mot de passe oublié ?</span></p>
-            </div>
-        </section>
-
-        <section id="registerSection" class="auth auth--hidden">
-            <h2 class="auth__title">Créer un compte</h2>
-            <form id="registerForm" class="auth__form">
-                <div class="form-group">
-                    <label for="registerName" class="form-group__label">Nom</label>
-                    <input type="text" id="registerName" class="form-group__input" placeholder="Votre nom" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail" class="form-group__label">Email</label>
-                    <input type="email" id="registerEmail" class="form-group__input" placeholder="Votre adresse email" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword" class="form-group__label">Mot de passe</label>
-                    <input type="password" id="registerPassword" class="form-group__input" placeholder="6 à 12 caractères" required>
-                    <small class="form-group__error" id="passwordHint">Le mot de passe doit contenir entre 6 et 12 caractères.</small>
-                </div>
-                <button type="submit" class="button button--primary button--block">S'inscrire</button>
-            </form>
-            <div class="auth__footer">
-                <p>Vous avez déjà un compte ? <span class="auth__link" id="showLoginBtn">Se connecter</span></p>
-            </div>
-        </section>
-
-        <section id="forgotPasswordSection" class="auth auth--hidden">
-            <h2 class="auth__title">Récupération de mot de passe</h2>
-            <form id="forgotPasswordForm" class="auth__form">
-                <div class="form-group">
-                    <label for="forgotEmail" class="form-group__label">Email</label>
-                    <input type="email" id="forgotEmail" class="form-group__input" placeholder="Votre adresse email" required>
-                </div>
-                <button type="submit" class="button button--primary button--block">Récupérer mon mot de passe</button>
-            </form>
-            <div class="auth__footer">
-                <p><span class="auth__link" id="backToLoginBtn">Retour à la connexion</span></p>
-            </div>
-        </section>
-
-        <!-- Application principale (Visible après connexion) -->
-        <main id="mainApp" class="main-app main-app--hidden">
-            <!-- Navigation des onglets -->
-            <div class="tabs">
-                <div class="tabs__item tabs__item--active" data-tab="analyzer">Analyseur</div>
-                <div class="tabs__item" data-tab="history">Historique</div>
-            </div>
-
-            <!-- Onglet Analyseur -->
-            <section id="analyzerTab" class="tab-content">
-                <div class="text-analyzer__form">
-                    <label for="textInput" class="text-analyzer__label">Entrez votre texte :</label>
-                    <textarea 
-                        id="textInput" 
-                        class="text-analyzer__textarea"
-                        placeholder="Écrivez ou collez votre texte ici..."
-                    ></textarea>
-                    
-                    <div class="text-analyzer__buttons">
-                        <button id="analyzeBtn" class="button button--primary">
-                            Analyser le texte
-                        </button>
-                        <button id="improveBtn" class="button button--info">
-                            Améliorer avec IA
-                        </button>
-                        <button id="clearBtn" class="button button--secondary">
-                            Effacer
-                        </button>
-                        <button id="sampleBtn" class="button button--secondary">
-                            Texte exemple
-                        </button>
+            
+            <!-- Menu utilisateur (visible après connexion) -->
+            <div class="header__user hidden" id="userMenu">
+                <div class="header__user-menu">
+                    <button class="header__user-button" id="userMenuButton">
+                        <span class="header__user-name" id="userDisplayName">Utilisateur</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="header__user-dropdown" id="userDropdown">
+                        <a href="#" class="header__dropdown-item" data-page="profile">
+                            <i class="fas fa-user"></i>
+                            <span>Mon profil</span>
+                        </a>
+                        <a href="#" class="header__dropdown-item" data-page="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Paramètres</span>
+                        </a>
+                        <div class="header__dropdown-divider"></div>
+                        <a href="#" class="header__dropdown-item header__dropdown-item--danger" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Déconnexion</span>
+                        </a>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Toggle pour menu mobile -->
+            <button class="header__mobile-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Menu mobile (visible sur mobile) -->
+    <div class="header__mobile-nav" id="mobileNav">
+        <button class="header__mobile-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="header__mobile-nav-items">
+            <a href="#" class="header__nav-item" data-page="analyzer">Analyseur</a>
+            <a href="#" class="header__nav-item" data-page="history">Historique</a>
+            <a href="#" class="header__nav-item" data-page="settings">Paramètres</a>
+            <a href="#" class="header__nav-item" data-page="profile">Mon profil</a>
+            <a href="#" class="header__nav-item header__dropdown-item--danger" id="mobileLogoutBtn">Déconnexion</a>
+        </div>
+    </div>
+
+    <!-- Contenu principal de l'application -->
+    <main class="container">
+        <!-- Pages de l'application -->
+        
+        <!-- Page Login -->
+        <div class="page page--active" id="loginPage">
+            <section class="auth">
+                <h2 class="auth__title">Connexion</h2>
+                <form id="loginForm" class="auth__form">
+                    <div class="form-group">
+                        <label for="loginEmail" class="form-group__label">Email</label>
+                        <input type="email" id="loginEmail" class="form-group__input" placeholder="Votre adresse email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" class="form-group__label">Mot de passe</label>
+                        <input type="password" id="loginPassword" class="form-group__input" placeholder="Votre mot de passe" required>
+                    </div>
+                    <button type="submit" class="button button--primary button--block">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Se connecter</span>
+                    </button>
+                </form>
+                <div class="auth__footer">
+                    <p>Vous n'avez pas de compte ? <span class="auth__link" data-page="register">S'inscrire</span></p>
+                    <p class="mt-2"><span class="auth__link" data-page="forgot-password">Mot de passe oublié ?</span></p>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Page Register -->
+        <div class="page" id="registerPage">
+            <section class="auth">
+                <h2 class="auth__title">Créer un compte</h2>
+                <form id="registerForm" class="auth__form">
+                    <div class="form-group">
+                        <label for="registerName" class="form-group__label">Nom</label>
+                        <input type="text" id="registerName" class="form-group__input" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail" class="form-group__label">Email</label>
+                        <input type="email" id="registerEmail" class="form-group__input" placeholder="Votre adresse email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword" class="form-group__label">Mot de passe</label>
+                        <input type="password" id="registerPassword" class="form-group__input" placeholder="6 à 12 caractères" required>
+                        <small class="form-group__hint">Le mot de passe doit contenir entre 6 et 12 caractères.</small>
+                    </div>
+                    <button type="submit" class="button button--primary button--block">
+                        <i class="fas fa-user-plus"></i>
+                        <span>S'inscrire</span>
+                    </button>
+                </form>
+                <div class="auth__footer">
+                    <p>Vous avez déjà un compte ? <span class="auth__link" data-page="login">Se connecter</span></p>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Page Forgot Password -->
+        <div class="page" id="forgot-passwordPage">
+            <section class="auth">
+                <h2 class="auth__title">Récupération de mot de passe</h2>
+                <form id="forgotPasswordForm" class="auth__form">
+                    <div class="form-group">
+                        <label for="forgotEmail" class="form-group__label">Email</label>
+                        <input type="email" id="forgotEmail" class="form-group__input" placeholder="Votre adresse email" required>
+                    </div>
+                    <button type="submit" class="button button--primary button--block">
+                        <i class="fas fa-key"></i>
+                        <span>Récupérer mon mot de passe</span>
+                    </button>
+                </form>
+                <div class="auth__footer">
+                    <p><span class="auth__link" data-page="login">Retour à la connexion</span></p>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Page Analyzer -->
+        <div class="page" id="analyzerPage">
+            <h1 class="mb-4">Analyseur de Texte</h1>
+            
+            <div class="text-analyzer__options">
+                <div>
+                    <span class="text-analyzer__option-label">Mode d'analyse :</span>
+                    <select id="analyzeMode" class="form-group__select">
+                        <option value="standard">Standard</option>
+                        <option value="academic">Académique</option>
+                        <option value="creative">Créatif</option>
+                        <option value="professional">Professionnel</option>
+                    </select>
+                </div>
+                <div>
+                    <span class="text-analyzer__option-label">Langue :</span>
+                    <select id="analyzeLanguage" class="form-group__select">
+                        <option value="fr">Français</option>
+                        <option value="en">Anglais</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="text-analyzer__form">
+                <label for="textInput" class="text-analyzer__label">Entrez votre texte :</label>
+                <textarea 
+                    id="textInput" 
+                    class="text-analyzer__textarea"
+                    placeholder="Écrivez ou collez votre texte ici..."
+                ></textarea>
                 
-                <div id="loadingIndicator" class="loading-indicator loading-indicator--hidden">
-                    <div class="loader"></div>
-                    <p class="loading-indicator__text">Analyse en cours...</p>
+                <div class="text-analyzer__buttons">
+                    <button id="analyzeBtn" class="button button--primary">
+                        <i class="fas fa-cogs"></i>
+                        <span>Analyser le texte</span>
+                    </button>
+                    <button id="improveBtn" class="button button--info">
+                        <i class="fas fa-magic"></i>
+                        <span>Améliorer avec IA</span>
+                    </button>
+                    <button id="clearBtn" class="button button--secondary">
+                        <i class="fas fa-eraser"></i>
+                        <span>Effacer</span>
+                    </button>
+                    <button id="sampleBtn" class="button button--secondary">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Texte exemple</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="loadingIndicator" class="loading-indicator hidden">
+                <div class="loader"></div>
+                <p class="loading-indicator__text">Analyse en cours...</p>
+            </div>
+            
+            <div id="resultsContainer" class="results hidden">
+                <h2 class="results__title">Résultats de l'analyse</h2>
+                
+                <div class="results__actions">
+                    <button id="exportPdfBtn" class="button button--secondary">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Exporter en PDF</span>
+                    </button>
+                    <button id="shareBtn" class="button button--secondary">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Partager</span>
+                    </button>
                 </div>
                 
-                <div id="resultsContainer" class="results results--hidden">
-                    <h2 class="results__title">Résultats de l'analyse</h2>
-                    
-                    <div class="results__grid">
-                        <div class="stat-card">
-                            <h3 class="stat-card__title">Statistiques générales</h3>
-                            <ul class="stat-card__list">
-                                <li class="stat-card__item"><span class="stat-card__label">Mots :</span> <span id="wordCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Caractères :</span> <span id="charCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Caractères (sans espaces) :</span> <span id="charNoSpaceCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Phrases :</span> <span id="sentenceCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Paragraphes :</span> <span id="paragraphCount">0</span></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <h3 class="stat-card__title">Analyse grammaticale</h3>
-                            <ul class="stat-card__list">
-                                <li class="stat-card__item"><span class="stat-card__label">Articles :</span> <span id="articleCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Verbes (potentiels) :</span> <span id="verbCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Adjectifs (potentiels) :</span> <span id="adjectiveCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Pronoms :</span> <span id="pronounCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Conjonctions :</span> <span id="conjunctionCount">0</span></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Qualité du texte -->
-                    <div class="stat-card mb-6">
-                        <h3 class="stat-card__title">Qualité du texte</h3>
+                <div class="chart-container">
+                    <canvas id="textStatsChart"></canvas>
+                </div>
+                
+                <div class="results__grid">
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Statistiques générales</h3>
                         <ul class="stat-card__list">
-                            <li class="stat-card__item"><span class="stat-card__label">Fautes d'orthographe potentielles :</span> <span id="spellingErrorCount" class="text-error">0</span></li>
-                            <li class="stat-card__item"><span class="stat-card__label">Vocabulaire à améliorer :</span> <span id="poorVocabCount" class="text-warning">0</span></li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Mots :</span>
+                                <span id="wordCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Caractères :</span>
+                                <span id="charCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Caractères (sans espaces) :</span>
+                                <span id="charNoSpaceCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Phrases :</span>
+                                <span id="sentenceCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Paragraphes :</span>
+                                <span id="paragraphCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Temps de lecture :</span>
+                                <span id="readingTime" class="stat-card__value">0 min</span>
+                            </li>
                         </ul>
                     </div>
                     
-                    <div class="word-frequency">
-                        <h3 class="word-frequency__title">Fréquence des mots</h3>
-                        <div class="word-frequency__table-container">
-                            <table class="word-frequency__table">
-                                <thead>
-                                    <tr>
-                                        <th class="word-frequency__table-header">Mot</th>
-                                        <th class="word-frequency__table-header">Fréquence</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="wordFrequencyBody">
-                                    <!-- Word frequency data will be inserted here -->
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Analyse grammaticale</h3>
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Articles :</span>
+                                <span id="articleCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Verbes (potentiels) :</span>
+                                <span id="verbCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Adjectifs (potentiels) :</span>
+                                <span id="adjectiveCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Pronoms :</span>
+                                <span id="pronounCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Conjonctions :</span>
+                                <span id="conjunctionCount" class="stat-card__value">0</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Texte amélioré -->
-                <div id="improvedTextContainer" class="improved-text improved-text--hidden">
-                    <div class="improved-text__header">
-                        <h3 class="improved-text__title">Texte amélioré</h3>
-                        <button id="copyImprovedBtn" class="button button--secondary">Copier</button>
+                <div class="results__grid">
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Qualité du texte</h3>
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Fautes d'orthographe potentielles :</span>
+                                <span id="spellingErrorCount" class="stat-card__value text-error">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Vocabulaire à améliorer :</span>
+                                <span id="poorVocabCount" class="stat-card__value text-warning">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Score de lisibilité :</span>
+                                <span id="readabilityScore" class="stat-card__value">0</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div id="improvedTextContent" class="improved-text__content"></div>
-                </div>
-            </section>
-
-            <!-- Onglet Historique -->
-            <section id="historyTab" class="tab-content tab-content--hidden">
-                <h2 class="mb-4">Historique des analyses</h2>
-                <div id="historyList" class="history-list">
-                    <!-- Les éléments d'historique seront ajoutés ici -->
-                    <p id="emptyHistory" class="text-center p-4">Aucune analyse dans l'historique.</p>
-                </div>
-            </section>
-        </main>
-
-        <!-- Modal de détail de l'historique -->
-        <div id="historyDetailModal" class="modal-backdrop modal-backdrop--hidden">
-            <div class="modal">
-                <div class="modal__header">
-                    <h3 class="modal__title">Détail de l'analyse</h3>
-                    <button class="modal__close" id="closeHistoryDetailBtn">&times;</button>
-                </div>
-                <div class="modal__body">
-                    <div id="historyDetailDate" class="mb-2"></div>
-                    <h4 class="mb-2">Texte analysé :</h4>
-                    <div id="historyDetailText" class="p-4" style="background-color: var(--color-bg-secondary); border-radius: 0.5rem; white-space: pre-wrap;"></div>
                     
-                    <h4 class="mt-4 mb-2">Statistiques :</h4>
-                    <div class="results__grid">
-                        <div class="stat-card">
-                            <ul class="stat-card__list">
-                                <li class="stat-card__item"><span class="stat-card__label">Mots :</span> <span id="historyWordCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Caractères :</span> <span id="historyCharCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Phrases :</span> <span id="historySentenceCount">0</span></li>
-                            </ul>
+                    <div class="stat-card">
+                        <h3 class="stat-card__title">Analyse stylistique</h3>
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Longueur moyenne des phrases :</span>
+                                <span id="avgSentenceLength" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Variété du vocabulaire :</span>
+                                <span id="vocabVariety" class="stat-card__value">0%</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Ton du texte :</span>
+                                <span id="textTone" class="stat-card__value">Neutre</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="word-frequency">
+                    <h3 class="word-frequency__title">Fréquence des mots</h3>
+                    <div class="word-frequency__table-container">
+                        <table class="word-frequency__table">
+                            <thead>
+                                <tr>
+                                    <th class="word-frequency__table-header">Mot</th>
+                                    <th class="word-frequency__table-header">Fréquence</th>
+                                    <th class="word-frequency__table-header">%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wordFrequencyBody">
+                                <!-- Word frequency data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Texte amélioré -->
+            <div id="improvedTextContainer" class="improved-text hidden">
+                <div class="improved-text__header">
+                    <h3 class="improved-text__title">Texte amélioré</h3>
+                    <div>
+                        <button id="copyImprovedBtn" class="button button--secondary button--sm">
+                            <i class="fas fa-copy"></i>
+                            <span>Copier</span>
+                        </button>
+                        <button id="useImprovedBtn" class="button button--primary button--sm">
+                            <i class="fas fa-check"></i>
+                            <span>Utiliser</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="improvedTextContent" class="improved-text__content"></div>
+            </div>
+        </div>
+        
+        <!-- Page History -->
+        <div class="page" id="historyPage">
+            <h1 class="mb-4">Historique des analyses</h1>
+            
+            <div class="flex justify-between mb-4 wrap">
+                <div class="form-group">
+                    <label for="historySortBy" class="form-group__label">Trier par</label>
+                    <select id="historySortBy" class="form-group__select">
+                        <option value="date-desc">Date (récent d'abord)</option>
+                        <option value="date-asc">Date (ancien d'abord)</option>
+                        <option value="words-desc">Nombre de mots (décroissant)</option>
+                        <option value="words-asc">Nombre de mots (croissant)</option>
+                    </select>
+                </div>
+                
+                <button id="clearHistoryBtn" class="button button--danger">
+                    <i class="fas fa-trash"></i>
+                    <span>Vider l'historique</span>
+                </button>
+            </div>
+            
+            <div id="historyList" class="history-list">
+                <!-- Les éléments d'historique seront ajoutés ici -->
+                <p id="emptyHistory" class="text-center p-4">Aucune analyse dans l'historique.</p>
+            </div>
+        </div>
+        
+        <!-- Page Settings -->
+        <div class="page" id="settingsPage">
+            <h1 class="mb-4">Paramètres</h1>
+            
+            <div class="card mb-6">
+                <div class="card__header">
+                    <h2 class="card__title">Apparence</h2>
+                </div>
+                <div class="card__body">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-group__label">Thème</label>
+                            <div class="flex gap-2 wrap mt-2">
+                                <button class="button button--primary theme-button" data-theme="default">Défaut</button>
+                                <button class="button button--secondary theme-button" data-theme="blue">Bleu</button>
+                                <button class="button button--secondary theme-button" data-theme="purple">Violet</button>
+                                <button class="button button--secondary theme-button" data-theme="green">Vert</button>
+                                <button class="button button--secondary theme-button" data-theme="orange">Orange</button>
+                            </div>
                         </div>
                         
-                        <div class="stat-card">
-                            <ul class="stat-card__list">
-                                <li class="stat-card__item"><span class="stat-card__label">Articles :</span> <span id="historyArticleCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Verbes :</span> <span id="historyVerbCount">0</span></li>
-                                <li class="stat-card__item"><span class="stat-card__label">Fautes :</span> <span id="historyErrorCount">0</span></li>
-                            </ul>
+                        <div class="form-group">
+                            <label class="form-group__label">Mode d'affichage</label>
+                            <div class="flex gap-2 wrap mt-2">
+                                <button class="button button--secondary mode-button" data-mode="light">Clair</button>
+                                <button class="button button--secondary mode-button" data-mode="dark">Sombre</button>
+                                <button class="button button--secondary mode-button" data-mode="auto">Auto</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="form-group">
+                            <label class="form-group__label">Taille du texte</label>
+                            <div class="flex gap-2 wrap mt-2">
+                                <button class="button button--secondary font-size-button" data-size="small">Petit</button>
+                                <button class="button button--primary font-size-button" data-size="base">Normal</button>
+                                <button class="button button--secondary font-size-button" data-size="large">Grand</button>
+                                <button class="button button--secondary font-size-button" data-size="xlarge">Très grand</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-group__label">Accessibilité</label>
+                            <div class="flex gap-2 wrap mt-2">
+                                <button id="highContrastToggle" class="button button--secondary">Contraste élevé</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal__footer">
-                    <button class="button button--secondary" id="closeHistoryModalBtn">Fermer</button>
-                    <button class="button button--primary" id="reanalyzeBtn">Analyser à nouveau</button>
+            </div>
+            
+            <div class="card mb-6">
+                <div class="card__header">
+                    <h2 class="card__title">Préférences d'analyse</h2>
+                </div>
+                <div class="card__body">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="defaultAnalysisMode" class="form-group__label">Mode d'analyse par défaut</label>
+                            <select id="defaultAnalysisMode" class="form-group__select">
+                                <option value="standard">Standard</option>
+                                <option value="academic">Académique</option>
+                                <option value="creative">Créatif</option>
+                                <option value="professional">Professionnel</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="defaultLanguage" class="form-group__label">Langue par défaut</label>
+                            <select id="defaultLanguage" class="form-group__select">
+                                <option value="fr">Français</option>
+                                <option value="en">Anglais</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        <label class="form-group__label">Composants d'analyse à afficher</label>
+                        <div class="flex gap-4 wrap mt-2">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="showSpellingCheck" checked>
+                                <span>Vérification orthographique</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="showReadabilityScore" checked>
+                                <span>Score de lisibilité</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="showTextTone" checked>
+                                <span>Ton du texte</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="showCharts" checked>
+                                <span>Graphiques</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card__header">
+                    <h2 class="card__title">Dictionnaire personnalisé</h2>
+                </div>
+                <div class="card__body">
+                    <p class="mb-4">Ajoutez des termes spécifiques à votre domaine qui ne doivent pas être signalés comme erreurs.</p>
+                    
+                    <div class="flex gap-4 mb-4">
+                        <div class="form-group flex-1">
+                            <input type="text" id="customDictionaryInput" class="form-group__input" placeholder="Ajouter un terme...">
+                        </div>
+                        <button id="addCustomWordBtn" class="button button--primary">
+                            <i class="fas fa-plus"></i>
+                            <span>Ajouter</span>
+                        </button>
+                    </div>
+                    
+                    <div id="customDictionaryContainer" class="p-4 bg-bg-secondary rounded">
+                        <p id="emptyDictionary" class="text-center">Aucun terme personnalisé.</p>
+                        <div id="customDictionaryTags" class="flex gap-2 wrap"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Page Profile -->
+        <div class="page" id="profilePage">
+            <h1 class="mb-4">Mon profil</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <div class="card__header">
+                        <h2 class="card__title">Informations personnelles</h2>
+                    </div>
+                    <div class="card__body">
+                        <form id="profileForm" class="grid gap-4">
+                            <div class="form-group">
+                                <label for="profileName" class="form-group__label">Nom</label>
+                                <input type="text" id="profileName" class="form-group__input" placeholder="Votre nom">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail" class="form-group__label">Email</label>
+                                <input type="email" id="profileEmail" class="form-group__input" placeholder="Votre email" readonly>
+                                <small class="form-group__hint">L'email ne peut pas être modifié.</small>
+                            </div>
+                            
+                            <button type="submit" class="button button--primary">
+                                <i class="fas fa-save"></i>
+                                <span>Enregistrer les modifications</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h2 class="card__title">Sécurité</h2>
+                    </div>
+                    <div class="card__body">
+                        <form id="passwordForm" class="grid gap-4">
+                            <div class="form-group">
+                                <label for="currentPassword" class="form-group__label">Mot de passe actuel</label>
+                                <input type="password" id="currentPassword" class="form-group__input" placeholder="Votre mot de passe actuel">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newPassword" class="form-group__label">Nouveau mot de passe</label>
+                                <input type="password" id="newPassword" class="form-group__input" placeholder="6 à 12 caractères">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-group__label">Confirmer le nouveau mot de passe</label>
+                                <input type="password" id="confirmPassword" class="form-group__input" placeholder="Répétez le nouveau mot de passe">
+                            </div>
+                            
+                            <button type="submit" class="button button--primary">
+                                <i class="fas fa-key"></i>
+                                <span>Changer le mot de passe</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-6">
+                <div class="card__header">
+                    <h2 class="card__title">Danger</h2>
+                </div>
+                <div class="card__body">
+                    <p class="mb-4">Une fois supprimé, votre compte ne pourra pas être récupéré. Toutes vos données seront perdues.</p>
+                    <button id="deleteAccountBtn" class="button button--danger">
+                        <i class="fas fa-trash"></i>
+                        <span>Supprimer mon compte</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-        <footer class="footer">
-            <p>Analyseur de texte français - Comptez les mots, articles, verbes et plus</p>
-        </footer>
+    <!-- Modales -->
+    
+    <!-- Modal de détail de l'historique -->
+    <div id="historyDetailModal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal__header">
+                <h3 class="modal__title">Détail de l'analyse</h3>
+                <button class="modal__close" id="closeHistoryDetailBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div id="historyDetailDate" class="mb-2"></div>
+                <h4 class="mb-2">Texte analysé :</h4>
+                <div id="historyDetailText" class="p-4" style="background-color: var(--color-bg-secondary); border-radius: 0.5rem; white-space: pre-wrap;"></div>
+                
+                <h4 class="mt-4 mb-2">Statistiques :</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="stat-card">
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Mots :</span>
+                                <span id="historyWordCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Caractères :</span>
+                                <span id="historyCharCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Phrases :</span>
+                                <span id="historySentenceCount" class="stat-card__value">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <ul class="stat-card__list">
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Articles :</span>
+                                <span id="historyArticleCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Verbes :</span>
+                                <span id="historyVerbCount" class="stat-card__value">0</span>
+                            </li>
+                            <li class="stat-card__item">
+                                <span class="stat-card__label">Fautes :</span>
+                                <span id="historyErrorCount" class="stat-card__value">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="button button--secondary" id="closeHistoryModalBtn">Fermer</button>
+                <button class="button button--primary" id="reanalyzeBtn">Analyser à nouveau</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de partage -->
+    <div id="shareModal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal__header">
+                <h3 class="modal__title">Partager l'analyse</h3>
+                <button class="modal__close" id="closeShareModalBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <p class="mb-4">Partagez cette analyse avec d'autres personnes :</p>
+                
+                <div class="form-group mb-4">
+                    <label for="shareLink" class="form-group__label">Lien de partage</label>
+                    <div class="flex">
+                        <input type="text" id="shareLink" class="form-group__input" readonly>
+                        <button id="copyShareLinkBtn" class="button button--primary">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="mb-2">Ou partagez via :</p>
+                <div class="flex gap-2">
+                    <button id="shareEmailBtn" class="button button--info">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </button>
+                    <button id="shareWhatsappBtn" class="button button--success">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </button>
+                    <button id="shareFacebookBtn" class="button">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmation de suppression -->
+    <div id="confirmDeleteModal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal__header">
+                <h3 class="modal__title">Confirmer la suppression</h3>
+                <button class="modal__close" id="closeConfirmDeleteBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <p class="mb-4">Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+                <p class="text-error mb-4">Toutes vos données seront perdues définitivement.</p>
+                
+                <div class="form-group">
+                    <label for="deleteConfirmPassword" class="form-group__label">Pour confirmer, saisissez votre mot de passe</label>
+                    <input type="password" id="deleteConfirmPassword" class="form-group__input" placeholder="Votre mot de passe">
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="button button--secondary" id="cancelDeleteBtn">Annuler</button>
+                <button class="button button--danger" id="confirmDeleteBtn">Supprimer définitivement</button>
+            </div>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <footer class="container text-center p-4 mt-8">
+        <p>Analyseur de texte français - Comptez les mots, articles, verbes et plus</p>
+        <p class="mt-2">© 2023 Analyseur de Texte Pro. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/analyzer.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/pdf.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
